@@ -146,7 +146,7 @@ export const receiveMapConfig = createAction(
  * @param {string} payload.mapboxApiAccessToken - mapboxApiAccessToken to be saved to mapStyle reducer
  * @public
  */
-export const keplerGlInit =  createAction(
+export const keplerGlInit = createAction(
   ActionTypes.INIT,
   ({mapboxApiAccessToken} = {}) => ({mapboxApiAccessToken})
 );
