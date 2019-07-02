@@ -50,17 +50,13 @@ const StyledDraw = styled(Draw)`
   display: ${props => props.visible ? 'default' : 'none'};
 `;
 
-const getMapStyle = isEdit => {
-  return{
-    top: {
-      position: 'absolute',
-      top: '0px',
-      pointerEvents: isEdit ? 'auto' : 'none',
-      zIndex: 1
-    },
-    bottom: {
-      pointerEvents: isEdit ? 'none' : 'auto'
-    }
+const MAP_STYLE = {
+  container: {
+    display: 'inline-block',
+    position: 'relative'
+  },
+  top: {
+    position: 'absolute', top: '0px', pointerEvents: 'none'
   }
 };
 
@@ -338,7 +334,8 @@ export default function MapContainerFactory(MapPopover, MapControl) {
         layerData,
         layerOrder,
         visStateActions,
-        mapboxApiAccessToken
+        mapboxApiAccessToken,
+        uiState
       } = this.props;
 
       let deckGlLayers = [];
@@ -360,6 +357,8 @@ export default function MapContainerFactory(MapPopover, MapControl) {
         }));
       }
 
+      const isEdit = uiState.mapControls.mapDraw.active;
+
       return (
         <DeckGL
           viewState={mapState}
@@ -369,6 +368,7 @@ export default function MapContainerFactory(MapPopover, MapControl) {
           onBeforeRender={this._onBeforeRender}
           onHover={visStateActions.onLayerHover}
           onClick={visStateActions.onLayerClick}
+          style={{zIndex: isEdit ? -1 : 0}}
         />
       );
     }
@@ -428,12 +428,11 @@ export default function MapContainerFactory(MapPopover, MapControl) {
         onViewportChange: this._onViewportChange,
         transformRequest
       };
-      const idEdit = uiState.mapControls.mapDraw.active;
 
-      const mapContainerStyles = getMapStyle(idEdit);
+      const isEdit = uiState.mapControls.mapDraw.active;
 
       return (
-        <StyledMapContainer style={MAP_STYLE_CONTAINER}>
+        <StyledMapContainer style={MAP_STYLE.container}>
           <MapControl
             datasets={datasets}
             dragRotate={mapState.dragRotate}
@@ -451,7 +450,7 @@ export default function MapContainerFactory(MapPopover, MapControl) {
             onToggleMapControl={uiStateActions.toggleMapControl}
             onSetEditorMode={uiStateActions.setEditorMode}
           />
-          <div style={mapContainerStyles.bottom}>
+          <div>
             <MapComponent
               {...mapProps}
               key="bottom"
@@ -462,23 +461,22 @@ export default function MapContainerFactory(MapPopover, MapControl) {
             >
               {this._renderOverlay()}
               {this._renderMapboxOverlays()}
+              <StyledDraw
+                editor={uiState.editor}
+                onSelect={uiStateActions.setSelectedFeature}
+                onUpdate={visStateActions.setFeatures}
+                features={visState.editor.features}
+                style={{zIndex: isEdit ? 0 : -1}}
+              />
             </MapComponent>
           </div>
-          {(mapStyle.topMapStyle || idEdit) && (
-            <div style={mapContainerStyles.top}>
+          {mapStyle.topMapStyle && (
+            <div style={MAP_STYLE.top}>
               <MapComponent
                 {...mapProps}
                 key="top"
                 mapStyle={mapStyle.topMapStyle}
-              >
-                <StyledDraw
-                  editor={uiState.editor}
-                  onSelect={uiStateActions.setSelectedFeature}
-                  onUpdate={visStateActions.setFeatures}
-                  features={visState.editor.features}
-
-                />
-              </MapComponent>
+              />
             </div>
           )}
           {this._renderMapPopover()}
