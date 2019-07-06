@@ -10,6 +10,7 @@ export default function customquantize() {
       unknown;
 
   function scale(x) {
+    // calculate index from the range
     return x <= x ? range[bisect(domain, x, 0, n)] : unknown;
   }
 
@@ -48,11 +49,11 @@ export default function customquantize() {
   };
 
   scale.copy = function() {
-    return quantize()
+    return customquantize()
         .domain([x0, x1])
         .range(range)
         .unknown(unknown);
   };
 
   return initRange.apply(linearish(scale), arguments);
-}
+};
