@@ -253,6 +253,7 @@ export const SCALE_FUNC = {
   quantile: require('d3-scale').scaleQuantile,
   ordinal: require('d3-scale').scaleOrdinal,
   sqrt: require('d3-scale').scaleSqrt,
+  custom: require('d3-scale').scaleQuantize,
   point: require('d3-scale').scalePoint
 };
 
