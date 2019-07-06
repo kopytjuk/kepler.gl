@@ -83,6 +83,10 @@ export function layerTypeChange(oldLayer, newType) {
  * @public
  */
 export function layerVisualChannelConfigChange(oldLayer, newConfig, channel) {
+  console.log("layerVisualChannelConfigChange was called!");
+  console.log(oldLayer);
+  console.log(newConfig);
+  console.log(channel)
   return {
     type: ActionTypes.LAYER_VISUAL_CHANNEL_CHANGE,
     oldLayer,
@@ -100,6 +104,9 @@ export function layerVisualChannelConfigChange(oldLayer, newConfig, channel) {
  * @public
  */
 export function layerVisConfigChange(oldLayer, newVisConfig) {
+  console.log("layerVisConfigChange was called!");
+  console.log(oldLayer);
+  console.log(newVisConfig);
   return {
     type: ActionTypes.LAYER_VIS_CONFIG_CHANGE,
     oldLayer,

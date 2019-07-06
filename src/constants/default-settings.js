@@ -239,6 +239,7 @@ export const SCALE_TYPES = keyMirror({
   quantile: null,
   quantize: null,
   linear: null,
+  custom: null,
 
   // for radius
   sqrt: null,
@@ -351,7 +352,7 @@ export const AGGREGATION_TYPES = {
 };
 
 export const linearFieldScaleFunctions = {
-  [CHANNEL_SCALES.color]: [SCALE_TYPES.quantize, SCALE_TYPES.quantile],
+  [CHANNEL_SCALES.color]: [SCALE_TYPES.quantize, SCALE_TYPES.quantile, SCALE_TYPES.custom],
   [CHANNEL_SCALES.radius]: [SCALE_TYPES.sqrt],
   [CHANNEL_SCALES.size]: [SCALE_TYPES.linear]
 };
